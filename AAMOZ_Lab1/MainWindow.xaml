@@ -3,10 +3,84 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AAMOZ_Lab1"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Індивідуальне завдання 1 - Локалізація об'єкта" Height="850" Width="1200"
+        Background="#F5F5F5">
+    
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Панель інструментів -->
+            <RowDefinition Height="2*"/>    <!-- Зображення -->
+            <RowDefinition Height="1*"/>    <!-- Графіки -->
+            <RowDefinition Height="Auto"/> <!-- Статистика -->
+        </Grid.RowDefinitions>
 
+        <!-- 1. Панель управління -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <Button Content="Завантажити зображення" Click="BtnLoad_Click" Padding="15,5" Margin="0,0,10,0"/>
+            <Button Content="Обробити" Click="BtnProcess_Click" Padding="15,5" Margin="0,0,10,0" Background="#E1F5FE"/>
+            <TextBlock x:Name="TxtStatus" VerticalAlignment="Center" Foreground="Gray" Text="Оберіть файл для аналізу..."/>
+        </StackPanel>
+
+        <!-- 2. Зображення (згідно з пунктом 4 завдання) -->
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Кольорове зображення" Grid.Column="0" Margin="5">
+                <Image x:Name="ImgOriginal" Stretch="Uniform"/>
+            </GroupBox>
+
+            <GroupBox Header="Чорно-біле (Binary)" Grid.Column="1" Margin="5">
+                <Image x:Name="ImgBinary" Stretch="Uniform"/>
+            </GroupBox>
+
+            <GroupBox Header="Відтінки сірого (Grayscale)" Grid.Column="2" Margin="5">
+                <Image x:Name="ImgGray" Stretch="Uniform"/>
+            </GroupBox>
+        </Grid>
+
+        <!-- 3. Графіки проєкцій (пункт 5) -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Горизонтальна проєкція HI(x)" Grid.Column="0" Margin="5">
+                <!-- Використовуємо ScottPlot для гістограм -->
+                <ScottPlot:WpfPlot x:Name="PlotHorizontal"/>
+            </GroupBox>
+
+            <GroupBox Header="Вертикальна проєкція VI(y)" Grid.Column="1" Margin="5">
+                <ScottPlot:WpfPlot x:Name="PlotVertical"/>
+            </GroupBox>
+        </Grid>
+
+        <!-- 4. Статистичні характеристики (пункт 9) -->
+        <Expander Grid.Row="3" Header="Статистичні характеристики та таблиця частот" IsExpanded="False" Margin="0,5,0,0">
+            <Grid Background="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0" Margin="5">
+                    <TextBlock Text="Статистика HI(x):" FontWeight="Bold"/>
+                    <TextBlock x:Name="TxtStatHorizontal" TextWrapping="Wrap" Text="Середнє: - ; Дисперсія: -"/>
+                    <DataGrid x:Name="GridFreqHorizontal" Height="100" Margin="0,5" AutoGenerateColumns="True"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Margin="5">
+                    <TextBlock Text="Статистика VI(y):" FontWeight="Bold"/>
+                    <TextBlock x:Name="TxtStatVertical" TextWrapping="Wrap" Text="Середнє: - ; Дисперсія: -"/>
+                    <DataGrid x:Name="GridFreqVertical" Height="100" Margin="0,5" AutoGenerateColumns="True"/>
+                </StackPanel>
+            </Grid>
+        </Expander>
     </Grid>
 </Window>
